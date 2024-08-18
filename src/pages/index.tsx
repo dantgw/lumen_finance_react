@@ -6,6 +6,11 @@ import { GreeterContractInteractions } from '@/components/web3/GreeterContractIn
 import { LumenContractInteractions } from '@/components/web3/LumenContractInteractions'
 import type { NextPage } from 'next'
 import 'twin.macro'
+import { Inter } from "next/font/google";
+
+
+const inter = Inter({ subsets: ["latin"] });
+
 
 const HomePage: NextPage = () => {
   // Display `useInkathon` error messages (optional)
@@ -16,7 +21,58 @@ const HomePage: NextPage = () => {
   // }, [error])
 
   return (
-    <>
+    <main
+      className={`flex min-h-screen flex-col items-center  ${inter.className}`}
+    >
+      <nav className="fixed left-0 px-10 top-0 w-full flex flex-row h-16 items-center justify-between">
+        <div className="flex flex-row items-center space-x-4">
+          <img src={"/logo.png"} />
+          <span> Lumen Finance </span>
+        </div>
+        <div className="flex flex-row items-center space-x-6">
+          <span>Get Funding</span>
+          <span>Invest Funds</span>
+
+          <ConnectButton />
+
+        </div>
+      </nav>
+
+      <div className="min-h-screen pt-20 flex flex-col space-y-6">
+        <div className="rounded-lg bg-white h-48 p-6 flex flex-col space-y-4 shadow-sm">
+          <div className="w-full flex flex-row space-x-16">
+            <div className="flex flex-col space-y-2">
+              <span className="flex flex-row items-center space-x-2 w-48">
+                <span> Claimable Interest </span>
+                <img src="/info.png" className="flex w-3 h-3" />
+              </span>
+              <div className="text-2xl">$0.20</div>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <span className="flex flex-row items-center space-x-2">
+                <span></span>
+              </span>
+              <div className="text-2xl"></div>
+            </div>
+
+            
+          </div>
+          <div className="flex flex-col space-y-2">
+            <div className="flex flex-row text-xs text-gray-500">
+              Next Payment Due
+            </div>
+            <div className="flex flex-row space-x-8">
+              <span> Acacia Gardening </span>
+              <span> $5000 </span>
+              <span> July 30, 2024 </span>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-lg overflow-hidden bg-white h-72 flex flex-col space-y-4 shadow-sm">
+
+        </div>
+
+        <>
       {/* Top Bar */}
       {/* <HomeTopBar /> */}
 
@@ -38,6 +94,10 @@ const HomePage: NextPage = () => {
         </div>
       </CenterBody>
     </>
+        
+      </div>
+    </main>
+    
   )
 }
 
