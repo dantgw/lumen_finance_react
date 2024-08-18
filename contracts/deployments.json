@@ -1,0 +1,22 @@
+[
+  {
+    "contractId": "greeting",
+    "networkPassphrase": "Standalone Network ; February 2017",
+    "contractAddress": "CAQEPQ5ZX3CUQPZP47YBPR3J5LUOER44TC5WWMCV2K42X5AAWAU4DKNG"
+  },
+  {
+    "contractId": "greeting",
+    "networkPassphrase": "Test SDF Network ; September 2015",
+    "contractAddress": "CDWGVPSUXXSGABQ663FVV4TZJH4Q2R3HVAKTKWFFFMWPF23O7KMNS4KU"
+  },
+  {
+    "contractId": "lumen_finance",
+    "networkPassphrase": "Test SDF Network ; September 2015",
+    "contractAddress": "CC3O32XG3E2RGRP43F4OUJTWQFSDKNAQK3PC3NUBLDRPKOUGDR7NIWOU"
+  },
+  {
+    "contractId": "lumen_usdc",
+    "networkPassphrase": "Test SDF Network ; September 2015",
+    "contractAddress": "CD2HM6J5UML3XEH4EBU3TFWZDVF3AIU64HAPKYDYE43Q3DEWMKT5MZXT"
+  }
+]
