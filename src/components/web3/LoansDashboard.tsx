@@ -14,7 +14,7 @@ export const LoansDashboard = () => {
     <div tw="rounded-2xl overflow-hidden bg-white  flex flex-col space-y-4 shadow-md items-center">
     <img 
     tw="w-256"
-    src="icons/loans.png" />
+    src="icons/loan.png" />
   </div>
 
   )

@@ -171,10 +171,9 @@ export const TokenContractInteractions = ({ tokenBalance }: TokenBalance) => {
          <div tw="w-full flex flex-row justify-center">
 
           <Button
-            tw='w-full max-w-96'
+            tw='w-full max-w-96 bg-indigo-500 text-white text-sm font-medium'
             onClick={mint}
             mt={4}
-            colorScheme="purple"
             isDisabled={updateIsLoading}
             isLoading={updateIsLoading}
           >

@@ -42,12 +42,12 @@ export const ConnectButton = () => {
           <MenuButton
             as={Button}
             // isLoading={isConnecting}
+            tw="bg-indigo-500 text-white"
             size="md"
             rightIcon={<FiChevronDown size={22} />}
             py={6}
-            fontWeight="bold"
+            fontWeight="medium"
             rounded="2xl"
-            colorScheme="purple"
           >
             Connect Wallet
           </MenuButton>
