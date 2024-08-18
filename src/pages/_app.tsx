@@ -1,7 +1,7 @@
 import { BaseLayout } from '@/components/layout/BaseLayout'
 import { HotToastConfig } from '@/components/layout/HotToastConfig'
 import GlobalStyles from '@/styles/GlobalStyles'
-import { ChakraProvider, DarkMode } from '@chakra-ui/react'
+import { ChakraProvider, DarkMode, LightMode } from '@chakra-ui/react'
 import { cache } from '@emotion/css'
 import { CacheProvider } from '@emotion/react'
 import { DefaultSeo } from 'next-seo'
@@ -56,15 +56,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       <MySorobanReactProvider>
         <CacheProvider value={cache}>
           <ChakraProvider>
-            <DarkMode>
+            <LightMode>
               <GlobalStyles />
-
               <BaseLayout>
                 <Component {...pageProps} />
               </BaseLayout>
 
               <HotToastConfig />
-            </DarkMode>
+            </LightMode>
           </ChakraProvider>
         </CacheProvider>
       </MySorobanReactProvider>

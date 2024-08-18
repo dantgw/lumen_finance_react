@@ -52,7 +52,7 @@ export const ConnectButton = () => {
             Connect Wallet
           </MenuButton>
 
-          <MenuList bgColor="blackAlpha.900" borderColor="whiteAlpha.300" rounded="2xl">
+          <MenuList bgColor="whiteAlpha.900" borderColor="whiteAlpha.100" rounded="2xl">
             {/* Installed Wallets */}
             {!activeAccount &&
               browserWallets.map((w) => 
@@ -61,7 +61,7 @@ export const ConnectButton = () => {
                     onClick={() => {
                       setActiveConnectorAndConnect && setActiveConnectorAndConnect(w)
                     }}
-                    tw="bg-transparent hocus:bg-gray-800"
+                    tw="bg-transparent hocus:bg-gray-100"
                   >
                     {w.name}
                   </MenuItem>
@@ -96,7 +96,7 @@ export const ConnectButton = () => {
         </HStack>
 
         <MenuList
-          bgColor="blackAlpha.900"
+          bgColor="whiteAlpha.900"
           borderColor="whiteAlpha.300"
           rounded="2xl"
           maxHeight="40vh"
@@ -128,7 +128,7 @@ export const ConnectButton = () => {
           <MenuItem
             onClick={async () => {console.log("Disconnecting"); await disconnect()}}
             icon={<AiOutlineDisconnect size={18} />}
-            tw="bg-transparent hocus:bg-gray-800"
+            tw="bg-transparent hocus:bg-gray-100"
           >
             Disconnect
           </MenuItem>
