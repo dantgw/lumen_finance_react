@@ -16,6 +16,7 @@ import { Address, nativeToScVal, ScInt, xdr } from '@stellar/stellar-sdk'
 
 import { useSorobanReact } from "@soroban-react/core"
 import * as StellarSdk from '@stellar/stellar-sdk';
+import { LoansDashboard } from '@/components/web3/LoansDashboard'
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -102,14 +103,12 @@ const HomePage: NextPage = () => {
         </div>
       </nav>
 
-      <div tw={"min-h-screen w-full pt-20 flex flex-col space-y-6"}>
+      <div tw={"min-h-screen w-full pt-20 flex flex-col space-y-12 items-center"}>
         <TokenContractInteractions tokenBalance={fetchedBalance}/>
         <LumenContractInteractions fetchBalance={fetchBalance} />
-
+        <LoansDashboard/>
         
-        <div tw={"rounded-lg overflow-hidden bg-white h-72 flex flex-col space-y-4 shadow-sm"}>
 
-        </div>
 
         
       </div>

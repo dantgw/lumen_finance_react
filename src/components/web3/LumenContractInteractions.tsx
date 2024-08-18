@@ -284,7 +284,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
 
   return (
 
-      <div tw={"rounded-lg bg-white p-6 flex flex-col space-y-4 shadow-md"}>
+      <div tw={"rounded-2xl bg-white p-6 flex flex-col space-y-4 shadow-sm w-full max-w-256"}>
           <div tw={"w-full flex flex-row space-x-16 justify-between"}>
             <div tw={"flex flex-col space-y-2"}>
               <span tw={"flex flex-row items-center space-x-2 w-48"}>
@@ -329,7 +329,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
             <div tw={"flex flex-row space-x-8"}>
               <span> Acacia Gardening </span>
               <span> $5000 </span>
-              <span> July 30, 2024 </span>
+              <span> Oct 30, 2024 </span>
             </div>
           </div>
       </div>

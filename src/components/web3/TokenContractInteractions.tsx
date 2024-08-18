@@ -153,7 +153,7 @@ export const TokenContractInteractions = ({ tokenBalance }: TokenBalance) => {
   }
 
   return (
-    <div tw={"rounded-lg bg-white h-48 p-6 flex flex-col space-y-4 shadow-sm"}>
+    <div tw={"rounded-2xl bg-white h-48 p-6 flex flex-col space-y-4 shadow-sm max-w-256 w-full"}>
          <h2
             tw='font-medium text-xl inline-flex items-center space-x-2'
          >
