@@ -51,13 +51,13 @@ export const TokenContractInteractions: FC = () => {
 
     if (!address) {
       console.log("Address is not defined")
-      toast.error('Wallet is not connected. Try again...')
+      // toast.error('Wallet is not connected. Try again...')
       return
     }
     const currentChain = sorobanContext.activeChain?.name?.toLocaleLowerCase()
     if (!currentChain) {
       console.log("No active chain")
-      toast.error('Wallet not connected. Try again…')
+      // toast.error('Wallet not connected. Try again…')
       return
     }
     else {

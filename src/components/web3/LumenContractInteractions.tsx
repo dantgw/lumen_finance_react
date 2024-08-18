@@ -23,27 +23,20 @@ export const LumenContractInteractions: FC = () => {
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false)
   const { register, handleSubmit } = useForm<UpdateGreetingValues>()
   
-  // Two options are existing for fetching data from the blockchain
-  // The first consists on using the useContractValue hook demonstrated in the useGreeting.tsx file
-  // This hook simulate the transation to happen on the bockchain and allow to read the value from it
-  // Its main advantage is to allow for updating the value display on the frontend without any additional action
-  // const {isWrongConnection, fetchedGreeting} = useGreeting({ sorobanContext })
-  
-  // The other option, maybe simpler to understand and implement is the one implemented here
-  // Where we fetch the value manually with each change of the state.
-  // We trigger the fetch with flipping the value of updateFrontend or refreshing the page
-  
-  const [fetchedGreeting, setGreeterMessage] = useState<string>()
+  const [fetchedFees, setFees] = useState<string>()
+  const [fetchedUserShareBalance, setUserShareBalance] = useState<string>()
+  const [fetchedShareBalance, setShareBalance] = useState<string>()
+
   const [updateFrontend, toggleUpdate] = useState<boolean>(true)
   const [contractAddressStored, setContractAddressStored] = useState<string>()
 
   // Retrieve the deployed contract object from contract Registry
   const contract = useRegisteredContract("lumen_finance")
-  const tokenContract = useRegisteredContract("lumen_usdc")
 
+  const { activeChain, server, address } = sorobanContext
 
-  // Fetch Greeting
-  const fetchGreeting = useCallback(async () => {
+  // Fetch Fees
+  const fetchFees = useCallback(async () => {
     if (!sorobanContext.server) return
 
     const currentChain = sorobanContext.activeChain?.name?.toLocaleLowerCase()
@@ -67,26 +60,111 @@ export const LumenContractInteractions: FC = () => {
         // Value needs to be cast into a string as we fetch a ScVal which is not readable as is.
         // You can check out the scValConversion.tsx file to see how it's done
         const result_string = StellarSdk.scValToNative(result as StellarSdk.xdr.ScVal) as string
-        setGreeterMessage(result_string)
+        setFees(result_string)
       } catch (e) {
         console.error(e)
         toast.error('Error while fetching greeting. Try again…')
-        setGreeterMessage(undefined)
+        setFees(undefined)
       } finally {
         setFetchIsLoading(false)
       }
     }
   },[sorobanContext,contract])
 
-  useEffect(() => {void fetchGreeting()}, [updateFrontend,fetchGreeting])
-
-
-  const { activeChain, server, address } = sorobanContext
-
-  const updateGreeting = async ({ newMessage }: UpdateGreetingValues ) => {
+  // Fetch UserShareBalance
+  const fetchUserShareBalance = useCallback(async () => {
+    if (!sorobanContext.server) return
     if (!address) {
       console.log("Address is not defined")
-      toast.error('Wallet is not connected. Try again...')
+      // toast.error('Wallet is not connected. Try again...')
+      return
+    }
+    const currentChain = sorobanContext.activeChain?.name?.toLocaleLowerCase()
+    if (!currentChain) {
+      console.log("No active chain")
+      // toast.error('Wallet not connected. Try again…')
+      return
+    }
+    else {
+      const contractAddress = contract?.deploymentInfo.contractAddress
+      setContractAddressStored(contractAddress)
+      setFetchIsLoading(true)
+      try {
+        const result = await contract?.invoke({
+          method: 'get_user_share_balance',
+          args: [new Address(address).toScVal()]
+        })
+       
+        if (!result) return
+
+        // Value needs to be cast into a string as we fetch a ScVal which is not readable as is.
+        // You can check out the scValConversion.tsx file to see how it's done
+        const result_string = StellarSdk.scValToNative(result as StellarSdk.xdr.ScVal) as string
+        setUserShareBalance(result_string)
+      } catch (e) {
+        console.error(e)
+        toast.error('Error while fetching greeting. Try again…')
+        setUserShareBalance(undefined)
+      } finally {
+        setFetchIsLoading(false)
+      }
+    }
+  },[sorobanContext,contract])
+
+  const fetchShareBalance = useCallback(async () => {
+    if (!sorobanContext.server) return
+    if (!address) {
+      console.log("Address is not defined")
+      // toast.error('Wallet is not connected. Try again...')
+      return
+    }
+    const currentChain = sorobanContext.activeChain?.name?.toLocaleLowerCase()
+    if (!currentChain) {
+      console.log("No active chain")
+      // toast.error('Wallet not connected. Try again…')
+      return
+    }
+    else {
+      const contractAddress = contract?.deploymentInfo.contractAddress
+      setContractAddressStored(contractAddress)
+      setFetchIsLoading(true)
+      try {
+        // const result = await contract?.invoke({
+        //   method: 'get_user_share_balance',
+        //   args: [new Address(address).toScVal()]
+        // })
+        const result = await contract?.invoke({
+          method: 'get_shares',
+          args: []
+        })
+
+        if (!result) return
+
+        // Value needs to be cast into a string as we fetch a ScVal which is not readable as is.
+        // You can check out the scValConversion.tsx file to see how it's done
+        const result_string = StellarSdk.scValToNative(result as StellarSdk.xdr.ScVal) as string
+        setShareBalance(result_string)
+      } catch (e) {
+        console.error(e)
+        toast.error('Error while fetching balance. Try again…')
+        setShareBalance(undefined)
+      } finally {
+        setFetchIsLoading(false)
+      }
+    }
+  },[sorobanContext,contract])
+
+  useEffect(() => {void fetchFees()}, [updateFrontend,fetchFees])
+
+  useEffect(() => {void fetchUserShareBalance()}, [updateFrontend,fetchUserShareBalance])
+
+  useEffect(() => {void fetchShareBalance()}, [updateFrontend,fetchShareBalance])
+
+
+  const deposit = async () => {
+    if (!address) {
+      console.log("Address is not defined")
+      // toast.error('Wallet is not connected. Try again...')
       return
     }
     else if (!server) {
@@ -107,8 +185,8 @@ export const LumenContractInteractions: FC = () => {
 
         try {
           const result = await contract?.invoke({
-            method: 'set_title',
-            args: [nativeToScVal(newMessage, {type: "string"})],
+            method: 'deposit',
+            args: [ new Address(address).toScVal(),  new ScInt(1000000).toI128()],
             signAndSend: true
           })
           console.log('🚀 « result:', result);
@@ -133,10 +211,10 @@ export const LumenContractInteractions: FC = () => {
     }
   }
 
-  const mint = async () => {
+  const withdraw = async () => {
     if (!address) {
       console.log("Address is not defined")
-      toast.error('Wallet is not connected. Try again...')
+      // toast.error('Wallet is not connected. Try again...')
       return
     }
     else if (!server) {
@@ -156,8 +234,8 @@ export const LumenContractInteractions: FC = () => {
         setUpdateIsLoading(true)
 
         try {
-          const result = await tokenContract?.invoke({
-            method: 'mint',
+          const result = await contract?.invoke({
+            method: 'withdraw',
             args: [ new Address(address).toScVal(),  new ScInt(1000000).toI128()],
             signAndSend: true
           })
@@ -202,59 +280,56 @@ export const LumenContractInteractions: FC = () => {
   }
 
   return (
-    <>
-      <div tw="flex grow flex-col space-y-4 max-w-[20rem]">
-        <h2 tw="text-center font-mono text-gray-400">Greeter Smart Contract</h2>
 
-        {/* Fetched Greeting */}
-        <Card variant="outline" p={4} bgColor="whiteAlpha.100">
-          <FormControl>
-            <FormLabel>Fetched Greeting</FormLabel>
-            <Input
-              placeholder={fetchedGreeting}
-              disabled={true}
-            />
-          </FormControl>
-        </Card>
-
-        {/* Update Greeting */}
-        <Card variant="outline" p={4} bgColor="whiteAlpha.100">
-          <form onSubmit={handleSubmit(updateGreeting)}>
-            <Stack direction="row" spacing={2} align="end">
-              <FormControl>
-                <FormLabel>Update Greeting</FormLabel>
-                <Input disabled={updateIsLoading} {...register('newMessage')} />
-              </FormControl>
+      <div tw={"rounded-lg bg-white p-6 flex flex-col space-y-4 shadow-md"}>
+          <div tw={"w-full flex flex-row space-x-16 justify-between"}>
+            <div tw={"flex flex-col space-y-2"}>
+              <span tw={"flex flex-row items-center space-x-2 w-48"}>
+                <span> Total Balance Incoming </span>
+                <img src="/icons/info.png" tw="flex w-3 h-3" />
+              </span>
+              <div tw={"text-2xl"}>{fetchedShareBalance?.toString()}</div>
+            </div>
+         
+            <div tw="space-x-4">
               <Button
-                type="submit"
-                mt={4}
-                colorScheme="purple"
-                isDisabled={updateIsLoading}
-                isLoading={updateIsLoading}
-              >
-                Submit
-              </Button>
-            </Stack>
-          </form>
-        </Card>
-        <Card>
-          <Button
-            onClick={mint}
-            mt={4}
-            colorScheme="purple"
-            isDisabled={updateIsLoading}
-            isLoading={updateIsLoading}
-          >
-            Mint
-          </Button>
-        </Card>
+              tw="text-white bg-indigo-500 font-normal text-sm px-6"
+              onClick={withdraw}
+              >Withdraw Funds</Button>
+              <Button
+              className="text-black bg-white outline-slate-400 outline-1 font-normal text-sm px-6"
+              tw="text-black bg-white outline-slate-200 outline-1 font-normal text-sm px-6"
+              onClick={deposit}
+              >Fund Lumen</Button>
 
-        {/* Contract Address */}
-        <p tw="text-center font-mono text-xs text-gray-600">
-          
-          {contractAddressStored ? <Link href={"https://stellar.expert/explorer/testnet/contract/" + contractAddressStored} target="_blank">{contractAddressStored}</Link> : "Loading address.."}
-        </p>
+            </div>
+            
+          </div>
+          <div tw={"flex flex-col space-y-2"}>
+              <span tw={"flex flex-row items-center space-x-2 w-48"}>
+                <span> User Share </span>
+                <img src="/icons/info.png" tw="flex w-3 h-3" />
+              </span>
+              <div tw={"text-2xl"}>{fetchedUserShareBalance?.toString()}</div>
+          </div>
+          <div tw={"flex flex-col space-y-2"}>
+              <span tw={"flex flex-row items-center space-x-2 w-48"}>
+                <span> Fees Earned </span>
+                <img src="/icons/info.png" tw="flex w-3 h-3" />
+              </span>
+              <div tw={"text-2xl"}>{fetchedFees?.toString()}</div>
+          </div>
+          <div tw={"flex flex-col space-y-2"}>
+            <div tw={"flex flex-row text-xs text-gray-500"}>
+              Next Payment Due
+            </div>
+            <div tw={"flex flex-row space-x-8"}>
+              <span> Acacia Gardening </span>
+              <span> $5000 </span>
+              <span> July 30, 2024 </span>
+            </div>
+          </div>
       </div>
-    </>
+
   )
 }

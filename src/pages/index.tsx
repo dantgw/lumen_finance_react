@@ -39,63 +39,15 @@ const HomePage: NextPage = () => {
         </div>
       </nav>
 
-      <div tw={"min-h-screen pt-20 flex flex-col space-y-6"}>
+      <div tw={"min-h-screen w-full pt-20 flex flex-col space-y-6"}>
         <TokenContractInteractions/>
-        <div tw={"rounded-lg bg-white h-48 p-6 flex flex-col space-y-4 shadow-sm"}>
-          <div tw={"w-full flex flex-row space-x-16"}>
-            <div tw={"flex flex-col space-y-2"}>
-              <span tw={"flex flex-row items-center space-x-2 w-48"}>
-                <span> Claimable Interest </span>
-                <img src="/icons/info.png" tw="flex w-3 h-3" />
-              </span>
-              <div tw={"text-2xl"}>$0.20</div>
-            </div>
-            <div tw={"flex flex-col space-y-2"}>
-              <span tw={"flex flex-row items-center space-x-2"}>
-                <span></span>
-              </span>
-              <div tw={"text-2xl"}></div>
-            </div>
+        <LumenContractInteractions />
 
-            
-          </div>
-          <div tw={"flex flex-col space-y-2"}>
-            <div tw={"flex flex-row text-xs text-gray-500"}>
-              Next Payment Due
-            </div>
-            <div tw={"flex flex-row space-x-8"}>
-              <span> Acacia Gardening </span>
-              <span> $5000 </span>
-              <span> July 30, 2024 </span>
-            </div>
-          </div>
-        </div>
+        
         <div tw={"rounded-lg overflow-hidden bg-white h-72 flex flex-col space-y-4 shadow-sm"}>
 
         </div>
 
-        <>
-      {/* Top Bar */}
-      {/* <HomeTopBar /> */}
-
-      <CenterBody tw={"mt-20 mb-10 px-5"}>
-        {/* Title */}
-        <HomePageTitle />
-
-        {/* Connect Wallet Button */}
-        <ConnectButton />
-
-        <div tw={"mt-10 flex w-full flex-wrap items-start justify-center gap-4"}>
-          {/* Chain Metadata Information */}
-          <ChainInfo />
-
-          {/* Greeter Read/Write Contract Interactions */}
-          <GreeterContractInteractions />
-          <LumenContractInteractions />
-
-        </div>
-      </CenterBody>
-    </>
         
       </div>
     </main>

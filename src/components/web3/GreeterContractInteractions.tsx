@@ -84,7 +84,7 @@ export const GreeterContractInteractions: FC = () => {
   const updateGreeting = async ({ newMessage }: UpdateGreetingValues ) => {
     if (!address) {
       console.log("Address is not defined")
-      toast.error('Wallet is not connected. Try again...')
+      // toast.error('Wallet is not connected. Try again...')
       return
     }
     else if (!server) {
