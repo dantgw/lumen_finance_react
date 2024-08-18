@@ -10,7 +10,7 @@ import * as StellarSdk from '@stellar/stellar-sdk';
 import React from 'react'
 import Link from 'next/link'
 
-import { contractInvoke, useRegisteredContract } from '@soroban-react/contracts'
+import { contractInvoke, TxResponse, useRegisteredContract } from '@soroban-react/contracts'
 import { nativeToScVal, ScInt, xdr } from '@stellar/stellar-sdk'
 
 
@@ -79,8 +79,8 @@ export const ApproveLoanContractInteraction: FC = () => {
             signAndSend: true
           })
           console.log('🚀 « result:', result);
-          
-          if (true) {
+          let result2 = result as TxResponse
+          if (result2.status == "SUCCESS") {
             toast.success("Loan Approval Success!")
           }
           else {

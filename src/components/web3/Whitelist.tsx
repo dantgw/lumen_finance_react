@@ -36,7 +36,7 @@ export const Whitelist: FC = () => {
 
   const { activeChain, server, address } = sorobanContext
 
-  const requestLoan = async () => {
+  const whitelist = async () => {
     if (!address) {
       console.log("Address is not defined")
       // toast.error('Wallet is not connected. Try again...')
@@ -57,11 +57,11 @@ export const Whitelist: FC = () => {
       else {
 
         setUpdateIsLoading(true)
-
+        if (!whitelistAddress){return}
         try {
           const result = await contract?.invoke({
             method: 'whitelist',
-            args: [new StellarSdk.Address(address).toScVal(), 
+            args: [new StellarSdk.Address(whitelistAddress).toScVal(), 
             ],
             signAndSend: true
           })
@@ -92,7 +92,7 @@ export const Whitelist: FC = () => {
         <div tw={"rounded-2xl bg-white p-6 flex flex-col space-y-4 shadow-sm max-w-96 w-full"}>
         <h2 tw="text-center text-2xl font-semibold text-black">Whitelist</h2>
           
-          <form onSubmit={handleSubmit(requestLoan)}>
+          <form onSubmit={handleSubmit(whitelist)}>
             <VStack spacing={2} align="middle">
               <FormControl>
                 <FormLabel>Whitelist Address</FormLabel>

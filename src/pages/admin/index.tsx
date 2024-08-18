@@ -25,7 +25,6 @@ import { NavBar } from '@/components/layout/NavBar'
 import { Whitelist } from '@/components/web3/Whitelist'
 import { ApproveLoanContractInteraction } from '@/components/web3/ApproveLoanContractInteraction'
 import { ViewLoansContractInteraction } from '@/components/web3/ViewLoansContractInteraction'
-const inter = Inter({ subsets: ["latin"] });
 
 
 const AdminPage: NextPage = () => {
@@ -42,9 +41,6 @@ const AdminPage: NextPage = () => {
   const [updateFrontend, toggleUpdate] = useState<boolean>(true)
   const [contractAddressStored, setContractAddressStored] = useState<string>()
   const tokenContract = useRegisteredContract("lumen_usdc")
-
-  
-  
 
   return (
     <main
