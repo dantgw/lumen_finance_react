@@ -1,4 +1,4 @@
-import { Button, Card, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
+import { Button, Card, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Stack, useDisclosure } from '@chakra-ui/react'
 import { type FC, useState, useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -29,6 +29,21 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
 
   const [updateFrontend, toggleUpdate] = useState<boolean>(true)
   const [contractAddressStored, setContractAddressStored] = useState<string>()
+
+  const { isOpen: isDepositOpen, onOpen: onDepositOpen, onClose: onDepositClose } = useDisclosure()
+  const { isOpen: isWithdrawOpen, onOpen: onWithdrawOpen, onClose: onWithdrawClose } = useDisclosure()
+
+  const [depositValue, setDepositValue] = useState<number>(0);
+
+  const handleDepositChange = (valueString: string) => {
+    setDepositValue(Number(valueString)); // Convert the string value to a number
+  };
+
+  const [withdrawValue, setWithdrawValue] = useState<number>(0);
+
+  const handleWithdrawChange = (valueString: string) => {
+    setWithdrawValue(Number(valueString)); // Convert the string value to a number
+  };
 
   // Retrieve the deployed contract object from contract Registry
   const contract = useRegisteredContract("lumen_finance")
@@ -63,7 +78,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
         setFees(result_string)
       } catch (e) {
         console.error(e)
-        toast.error('Error while fetching fees. Try again…')
+        // toast.error('Error while fetching fees. Try again…')
         setFees(undefined)
       } finally {
         setFetchIsLoading(false)
@@ -103,7 +118,6 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
         setUserShareBalance(result_string)
       } catch (e) {
         console.error(e)
-        toast.error('Error while fetching greeting. Try again…')
         setUserShareBalance(undefined)
       } finally {
         setFetchIsLoading(false)
@@ -146,7 +160,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
         setShareBalance(result_string)
       } catch (e) {
         console.error(e)
-        toast.error('Error while fetching balance. Try again…')
+        // toast.error('Error while fetching balance. Try again…')
         setShareBalance(undefined)
       } finally {
         setFetchIsLoading(false)
@@ -164,7 +178,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
   const deposit = async () => {
     if (!address) {
       console.log("Address is not defined")
-      // toast.error('Wallet is not connected. Try again...')
+      toast.error('Wallet is not connected. Try again...')
       return
     }
     else if (!server) {
@@ -186,10 +200,11 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
         try {
           const result = await contract?.invoke({
             method: 'deposit',
-            args: [ new Address(address).toScVal(),  new ScInt(1000000).toI128()],
+            args: [ new Address(address).toScVal(),  new ScInt(depositValue).toI128()],
             signAndSend: true
           })
-          console.log('🚀 « result:', result);
+          setDepositValue(0)
+          onDepositClose()
           
           if (true) {
             toast.success("Deposit success!")
@@ -215,7 +230,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
   const withdraw = async () => {
     if (!address) {
       console.log("Address is not defined")
-      // toast.error('Wallet is not connected. Try again...')
+      toast.error('Wallet is not connected. Try again...')
       return
     }
     else if (!server) {
@@ -237,15 +252,16 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
         try {
           const result = await contract?.invoke({
             method: 'withdraw',
-            args: [ new Address(address).toScVal(),  new ScInt(1000000).toI128()],
+            args: [ new Address(address).toScVal(),  new ScInt(withdrawValue).toI128()],
             signAndSend: true
           })
-          console.log('🚀 « result:', result);
+          setWithdrawValue(0)
+          onWithdrawClose()
           
           if (true) {
             toast.success("Withdraw success!")
             fetchBalance()
-
+            
           }
           else {
             toast.error("Withdraw unsuccessful...")
@@ -288,22 +304,25 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
           <div tw={"w-full flex flex-row space-x-16 justify-between"}>
             <div tw={"flex flex-col space-y-2"}>
               <span tw={"flex flex-row items-center space-x-2 w-48"}>
-                <span> Total Value Locked </span>
+                <span> Total Value Deposited </span>
                 <img src="/icons/info.png" tw="flex w-3 h-3" />
               </span>
               <div tw={"text-2xl"}>{fetchedShareBalance?.toString()}</div>
             </div>
          
             <div tw="space-x-4">
-              <Button
-              tw="text-white bg-indigo-500 font-normal text-sm px-6"
-              onClick={withdraw}
-              >Withdraw Funds</Button>
-              <Button
-              className="text-black bg-white outline-slate-400 outline-1 font-normal text-sm px-6"
-              tw="text-black bg-white outline-slate-200 outline-1 font-normal text-sm px-6"
-              onClick={deposit}
-              >Fund Lumen</Button>
+                <Button
+                  tw="text-white bg-indigo-500 font-normal text-sm px-6"
+                  onClick={onWithdrawOpen}
+                  >
+                    Withdraw Funds
+                </Button>
+              
+              <Button 
+                tw="text-black bg-white outline-slate-200 outline-1 font-normal text-sm px-6"
+        
+                onClick={onDepositOpen}>Fund Lumen
+              </Button>
 
             </div>
             
@@ -332,6 +351,62 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
               <span> Oct 30, 2024 </span>
             </div>
           </div>
+
+          <Modal isOpen={isDepositOpen} onClose={onDepositClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Deposit Into Lumen</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+              <NumberInput value={depositValue} onChange={handleDepositChange}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button 
+                  tw="font-medium text-sm"
+                mr={3} onClick={onDepositClose}>
+                  Close
+                </Button>
+                <Button 
+                onClick={deposit}
+                tw="bg-indigo-500 text-white text-sm font-medium">Deposit</Button>
+              </ModalFooter>
+            </ModalContent>
+            </Modal>
+
+            <Modal isOpen={isWithdrawOpen} onClose={onWithdrawClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Withdraw from Lumen</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+              <NumberInput value={withdrawValue} onChange={handleWithdrawChange}>
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button 
+                  tw="font-medium text-sm"
+                mr={3} onClick={onWithdrawClose}>
+                  Close
+                </Button>
+                <Button 
+                onClick={withdraw}
+                tw="bg-indigo-500 text-white text-sm font-medium">Withdraw</Button>
+              </ModalFooter>
+            </ModalContent>
+        </Modal>
       </div>
 
   )

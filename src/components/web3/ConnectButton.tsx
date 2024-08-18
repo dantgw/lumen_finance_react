@@ -16,6 +16,7 @@ import { FiChevronDown } from 'react-icons/fi'
 import { AiOutlineCheckCircle, AiOutlineDisconnect } from 'react-icons/ai'
 import toast from 'react-hot-toast'
 import type { WalletChain } from '@soroban-react/types'
+import { truncateHash } from '@/utils/truncateHash'
 
 export const ConnectButton = () => {
     // Connect Button
@@ -87,9 +88,9 @@ export const ConnectButton = () => {
           >
             <VStack spacing={0.5}>
               {/* <AccountName account={activeAccount} /> */}
-              <Text>{activeChain?.name}</Text>
+              {/* <Text>{activeChain?.name}</Text> */}
               <Text fontSize="xs" fontWeight="normal" opacity={0.75}>
-                {address}
+                {truncateHash(address)}
               </Text>
             </VStack>
           </MenuButton>

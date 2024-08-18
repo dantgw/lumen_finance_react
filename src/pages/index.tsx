@@ -17,6 +17,7 @@ import { Address, nativeToScVal, ScInt, xdr } from '@stellar/stellar-sdk'
 import { useSorobanReact } from "@soroban-react/core"
 import * as StellarSdk from '@stellar/stellar-sdk';
 import { LoansDashboard } from '@/components/web3/LoansDashboard'
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, useDisclosure } from '@chakra-ui/react'
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -35,6 +36,7 @@ const HomePage: NextPage = () => {
   const [contractAddressStored, setContractAddressStored] = useState<string>()
   const tokenContract = useRegisteredContract("lumen_usdc")
 
+  
   const fetchBalance = useCallback(async () => {
  
     if (!sorobanContext.server) return
@@ -108,6 +110,7 @@ const HomePage: NextPage = () => {
         <LumenContractInteractions fetchBalance={fetchBalance} />
         <LoansDashboard/>
         
+
 
 
         
