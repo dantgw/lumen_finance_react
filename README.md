@@ -30,7 +30,7 @@ Deployment follows a 2-step process. Do this for both the token smart contract a
 stellar contract install \
   --network testnet \
   --source bob \
-  --wasm target/wasm32-unknown-unknown/release/lumen_finance_contract.wasm
+  --wasm target/wasm32-unknown-unknown/release/lumen_finance.wasm
 
 Take note of the hash that prints on the console
 
@@ -57,14 +57,14 @@ stellar contract invoke \
 ### Initialize Lumen Smart Contract
 The token_wasm_hash refers to the hash that is output from the installation step of the token smart contract.
 stellar contract invoke \
-  --id CC3O32XG3E2RGRP43F4OUJTWQFSDKNAQK3PC3NUBLDRPKOUGDR7NIWOU \
-  --source bob \
+  --id CASRJH25KUZS5YS2M4NV73QTDTJPW2LA4EBOWND462RDW2ID3A23FTDY \
+  --source exposedAdmin \
   --network testnet \
   -- \
   initialize \
   --token_wasm_hash 7d2009f4a99b33c2040f6fd41bbf073a9247d453a870b69ae6ee92de991d89b0 \
   --usdc CD2HM6J5UML3XEH4EBU3TFWZDVF3AIU64HAPKYDYE43Q3DEWMKT5MZXT \
-  --admin GDQCMH2XW4EBE75MWSSTAJU4E26XFCCGICKCHGFXB2ECLJAXN3Y4LUQJ \
+  --admin GDYO4Y7TFSHO2CSSESJ47IVVZR5OECVX7IB5GQSH7BZ7YEVF5QS3ZEFO \
   --insurance GCIRPN6C2ZYTFKYV75VDDZASV43WET36ZL23YXIAL5VFDIEGXNB2Z6HE
 
 ### Whitelist Account
@@ -80,7 +80,8 @@ stellar contract invoke \
 #### Token Address (No Auth)
 CD2HM6J5UML3XEH4EBU3TFWZDVF3AIU64HAPKYDYE43Q3DEWMKT5MZXT
 #### Lumen Finance Contract ID:
-CC3O32XG3E2RGRP43F4OUJTWQFSDKNAQK3PC3NUBLDRPKOUGDR7NIWOU
+CC3O32XG3E2RGRP43F4OUJTWQFSDKNAQK3PC3NUBLDRPKOUGDR7NIWOU (OLD)
+CASRJH25KUZS5YS2M4NV73QTDTJPW2LA4EBOWND462RDW2ID3A23FTDY
 #### Token Hash
 7d2009f4a99b33c2040f6fd41bbf073a9247d453a870b69ae6ee92de991d89b0
 #### Lumen Finance Hash
