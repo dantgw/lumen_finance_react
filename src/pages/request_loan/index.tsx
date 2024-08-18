@@ -20,11 +20,12 @@ import * as StellarSdk from '@stellar/stellar-sdk';
 import { LoansDashboard } from '@/components/web3/LoansDashboard'
 import { Button, Menu, MenuButton, MenuItem, MenuList, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, useDisclosure } from '@chakra-ui/react'
 import Link from 'next/link'
+import { RequestLoanContractInteractions } from '@/components/web3/RequestLoanContractInteractions'
 import { NavBar } from '@/components/layout/NavBar'
 const inter = Inter({ subsets: ["latin"] });
 
 
-const HomePage: NextPage = () => {
+const RequestLoanPage: NextPage = () => {
 
   const sorobanContext = useSorobanReact()
 
@@ -94,17 +95,15 @@ const HomePage: NextPage = () => {
     <main
       tw={"flex min-h-screen flex-col items-center w-full"}
     >
-      <NavBar/>
-
+     <NavBar/>
       <div tw={"min-h-screen w-full pt-20 flex flex-col space-y-12 items-center"}>
-        <TokenContractInteractions tokenBalance={fetchedBalance}/>
-        <LumenContractInteractions fetchBalance={fetchBalance} />
-        <LoansDashboard/>
+        <RequestLoanContractInteractions/>
         
       </div>
+    
     </main>
     
   )
 }
 
-export default HomePage
+export default RequestLoanPage
