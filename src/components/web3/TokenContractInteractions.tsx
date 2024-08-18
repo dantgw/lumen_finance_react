@@ -13,26 +13,16 @@ import Link from 'next/link'
 import { contractInvoke, useRegisteredContract } from '@soroban-react/contracts'
 import { Address, nativeToScVal, ScInt, xdr } from '@stellar/stellar-sdk'
 
-type UpdateGreetingValues = { newMessage: string }
+type TokenBalance = { tokenBalance: string|undefined }
 
-export const TokenContractInteractions: FC = () => {
+export const TokenContractInteractions = ({ tokenBalance }: TokenBalance) => {
   const sorobanContext = useSorobanReact()
 
   const { activeChain, server, address } = sorobanContext
 
   const [, setFetchIsLoading] = useState<boolean>(false)
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false)
-  const { register, handleSubmit } = useForm<UpdateGreetingValues>()
   
-  // Two options are existing for fetching data from the blockchain
-  // The first consists on using the useContractValue hook demonstrated in the useGreeting.tsx file
-  // This hook simulate the transation to happen on the bockchain and allow to read the value from it
-  // Its main advantage is to allow for updating the value display on the frontend without any additional action
-  // const {isWrongConnection, fetchedGreeting} = useGreeting({ sorobanContext })
-  
-  // The other option, maybe simpler to understand and implement is the one implemented here
-  // Where we fetch the value manually with each change of the state.
-  // We trigger the fetch with flipping the value of updateFrontend or refreshing the page
   
   const [fetchedBalance, setBalance] = useState<string>()
   const [updateFrontend, toggleUpdate] = useState<boolean>(true)
@@ -42,8 +32,6 @@ export const TokenContractInteractions: FC = () => {
   // const contract = useRegisteredContract("lumen_finance")
   const tokenContract = useRegisteredContract("lumen_usdc")
 
-
-  // Fetch Greeting
   const fetchBalance = useCallback(async () => {
  
 
@@ -84,7 +72,7 @@ export const TokenContractInteractions: FC = () => {
         console.log("fetch balance",fetchedBalance)
       } catch (e) {
         console.error(e)
-        toast.error('Error while fetching greeting. Try again…')
+        toast.error('Error while fetching balance. Try again…')
         setBalance(undefined)
       } finally {
         setFetchIsLoading(false)
@@ -126,10 +114,11 @@ export const TokenContractInteractions: FC = () => {
           console.log('🚀 « result:', result);
           
           if (true) {
-            toast.success("New greeting successfully published!")
+            toast.success("Mint Success!")
+            fetchBalance()
           }
           else {
-            toast.error("Greeting unsuccessful...")
+            toast.error("Mint unsuccessful...")
             
           }
         } catch (e) {
@@ -176,8 +165,8 @@ export const TokenContractInteractions: FC = () => {
 
          </h2>
          <h3 tw="text-center text-4xl">
-          ${((BigInt(fetchedBalance ?? 0)) / BigInt(1) )?.toString()}
-
+          {/* ${((BigInt(fetchedBalance ?? 0)) / BigInt(1) )?.toString()} */}
+          {tokenBalance?.toString()}
          </h3>
          <div tw="w-full flex flex-row justify-center">
 

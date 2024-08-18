@@ -13,15 +13,15 @@ import Link from 'next/link'
 import { contractInvoke, useRegisteredContract } from '@soroban-react/contracts'
 import { Address, nativeToScVal, ScInt, xdr } from '@stellar/stellar-sdk'
 
-type UpdateGreetingValues = { newMessage: string }
 
-export const LumenContractInteractions: FC = () => {
+type FetchBalance = { fetchBalance: () => void; }
+
+export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
   const sorobanContext = useSorobanReact()
 
 
   const [, setFetchIsLoading] = useState<boolean>(false)
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>(false)
-  const { register, handleSubmit } = useForm<UpdateGreetingValues>()
   
   const [fetchedFees, setFees] = useState<string>()
   const [fetchedUserShareBalance, setUserShareBalance] = useState<string>()
@@ -63,7 +63,7 @@ export const LumenContractInteractions: FC = () => {
         setFees(result_string)
       } catch (e) {
         console.error(e)
-        toast.error('Error while fetching greeting. Try again…')
+        toast.error('Error while fetching fees. Try again…')
         setFees(undefined)
       } finally {
         setFetchIsLoading(false)
@@ -192,10 +192,11 @@ export const LumenContractInteractions: FC = () => {
           console.log('🚀 « result:', result);
           
           if (true) {
-            toast.success("New greeting successfully published!")
+            toast.success("Deposit success!")
+            fetchBalance()
           }
           else {
-            toast.error("Greeting unsuccessful...")
+            toast.error("Deposit unsuccessful...")
             
           }
         } catch (e) {
@@ -242,10 +243,12 @@ export const LumenContractInteractions: FC = () => {
           console.log('🚀 « result:', result);
           
           if (true) {
-            toast.success("New greeting successfully published!")
+            toast.success("Withdraw success!")
+            fetchBalance()
+
           }
           else {
-            toast.error("Greeting unsuccessful...")
+            toast.error("Withdraw unsuccessful...")
             
           }
         } catch (e) {
@@ -285,7 +288,7 @@ export const LumenContractInteractions: FC = () => {
           <div tw={"w-full flex flex-row space-x-16 justify-between"}>
             <div tw={"flex flex-col space-y-2"}>
               <span tw={"flex flex-row items-center space-x-2 w-48"}>
-                <span> Total Balance Incoming </span>
+                <span> Total Value Locked </span>
                 <img src="/icons/info.png" tw="flex w-3 h-3" />
               </span>
               <div tw={"text-2xl"}>{fetchedShareBalance?.toString()}</div>
