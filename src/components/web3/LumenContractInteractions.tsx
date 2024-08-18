@@ -309,7 +309,7 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
               </span>
               <div tw={"text-2xl"}>{fetchedShareBalance?.toString()}</div>
             </div>
-         
+
             <div tw="space-x-4">
                 <Button
                   tw="text-white bg-indigo-500 font-normal text-sm px-6"
@@ -359,18 +359,18 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
               <ModalCloseButton />
               <ModalBody>
               <NumberInput value={depositValue} onChange={handleDepositChange}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+              </NumberInput>
               </ModalBody>
 
               <ModalFooter>
                 <Button 
                   tw="font-medium text-sm"
-                mr={3} onClick={onDepositClose}>
+                  mr={3} onClick={onDepositClose}>
                   Close
                 </Button>
                 <Button 
@@ -378,27 +378,27 @@ export const LumenContractInteractions: FC<FetchBalance> = ({fetchBalance}) => {
                 tw="bg-indigo-500 text-white text-sm font-medium">Deposit</Button>
               </ModalFooter>
             </ModalContent>
-            </Modal>
+          </Modal>
 
-            <Modal isOpen={isWithdrawOpen} onClose={onWithdrawClose}>
+          <Modal isOpen={isWithdrawOpen} onClose={onWithdrawClose}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Withdraw from Lumen</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
               <NumberInput value={withdrawValue} onChange={handleWithdrawChange}>
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+              </NumberInput>
               </ModalBody>
 
               <ModalFooter>
                 <Button 
                   tw="font-medium text-sm"
-                mr={3} onClick={onWithdrawClose}>
+                  mr={3} onClick={onWithdrawClose}>
                   Close
                 </Button>
                 <Button 
