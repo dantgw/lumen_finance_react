@@ -76,7 +76,7 @@ const HomePage: NextPage = () => {
         console.log("fetch balance",fetchedBalance)
       } catch (e) {
         console.error(e)
-        toast.error('Error while fetching balance. Try again…')
+        // toast.error('Error while fetching balance. Try again…')
         setBalance(undefined)
       } finally {
         setFetchIsLoading(false)
