@@ -6,6 +6,8 @@ import 'twin.macro'
 import { ConnectButton } from '../web3/ConnectButton'
 
 export const NavBar: FC<PropsWithChildren> = ({ children }) => {
+
+  const menuItem =[{name: "Request Loan", link: "request_loan"}, {name: "View Loan", link: "view_loan"}, {name: "Claim Loan", link: "claim_loan"}, {name: "Repay Loan", link: "repay_loan"}, {name: "Admin", link: "admin"}]
   return (
     <nav tw={"fixed left-0 px-10 top-0 w-full flex flex-row h-16 items-center justify-between z-1"}>
     <div tw={"flex flex-row items-center space-x-4"}>
@@ -27,36 +29,23 @@ export const NavBar: FC<PropsWithChildren> = ({ children }) => {
         >
           Services
         </MenuButton>
-        <MenuList zIndex="dropdown">
+        <MenuList zIndex="dropdown w-full">
+          {menuItem.map((item, index) => {
+        return (
+          <MenuItem
+            tw="w-full"
+            key={item.name}
+          >
+            <Link 
+            tw="w-full"
+            href={item.link}>
+              {item.name}
+            </Link>
+          </MenuItem>
+          )
 
-          <MenuItem
-            tw="bg-white"
-          >
-            <Link href="request_loan">
-              Request Loan
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link href="view_loan">
-              View Loan
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link href="claim_loan">
-              Claim Loan
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link href="repay_loan">
-              Repay Loan
-            </Link>
-          </MenuItem>
-          <MenuItem
-          >
-            <Link href="admin">
-              Admin
-            </Link>
-          </MenuItem>
+          })}
+          
         </MenuList>
       </Menu>
       <ConnectButton />
